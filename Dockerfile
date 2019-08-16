@@ -1,12 +1,9 @@
 FROM golang:alpine3.10
 
-RUN apk add perl apk add bash
 RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
-    alpine-sdk gflags godep
+    alpine-sdk gflags godep perl bash
 RUN apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    snappy rocksdb
-
-EXPOSE 6380 11181
+    snappy rocksdb rocksdb-dev
 
 #RUN apk add lua5.1 lua5.1-dev # --update-cache --repository http://nl.alpinelinux.org/alpine/edge/testing
 
@@ -21,7 +18,7 @@ RUN mkdir -p $GOPATH/src/github.com/siddontang && \
     cat build_config.mk; make; \
     mv ./bin/ledis* $GOPATH/bin/
 
-RUN apk del build-base linux-headers git cmake bash
+RUN apk del alpine-sdk bash
 
 WORKDIR /home
 
